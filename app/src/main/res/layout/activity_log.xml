@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/log_top_anchor"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp" />
+
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/log_type_spinner" />
+
+    <Spinner
+        android:id="@+id/log_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/log_filter_button"
+        android:spinnerMode="dropdown" />
+
+    <Button
+        android:id="@+id/log_filter_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/log_type_spinner"
+        android:layout_toLeftOf="@+id/log_delete_button"
+        android:padding="10dp"
+        android:text="Filter"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/log_delete_button"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/log_type_spinner"
+        android:padding="10dp"
+        android:text="Delete"
+        android:textSize="20sp" />
+
+    <gt.utils.log.mobilelogcat.component.FilterView
+        android:id="@+id/log_filter_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/log_type_spinner"
+        android:visibility="gone" />
+</RelativeLayout>

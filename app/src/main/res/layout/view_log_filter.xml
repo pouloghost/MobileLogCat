@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
+
+    <TextView
+        android:id="@+id/log_filter_level_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Level: "
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/log_filter_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/log_filter_content_hint"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/log_filter_tag_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_filter_level"
+        android:text="In Tag: "
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/log_filter_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/log_filter_tag_hint"
+        android:layout_toRightOf="@+id/log_filter_content_hint"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/log_filter_content_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_filter_tag"
+        android:text="In Content: "
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/log_filter_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/log_filter_content_hint"
+        android:layout_toRightOf="@+id/log_filter_content_hint"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/log_filter_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_filter_content"
+        android:text="Filter" />
+</RelativeLayout>
