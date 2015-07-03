@@ -20,6 +20,7 @@ import gt.utils.log.mobilelogcat.R;
 import gt.utils.log.mobilelogcat.callback.AbsLogCallback;
 import gt.utils.log.mobilelogcat.callback.DebugLogCallback;
 import gt.utils.log.mobilelogcat.callback.ErrorLogCallback;
+import gt.utils.log.mobilelogcat.common.Constants;
 import gt.utils.log.mobilelogcat.common.LogCatManager;
 import gt.utils.log.mobilelogcat.common.LogModel;
 import gt.utils.log.mobilelogcat.filter.AbsLogFilter;
@@ -34,7 +35,6 @@ public class LogActivity extends Activity {
     private View mAnchor;
 
     private BaseLogAdapter mAdapter;
-    private List<AbsLogCallback> mCallbacks = new ArrayList<AbsLogCallback>();
 
     private LogDetailView mDetailView;
 
@@ -53,7 +53,7 @@ public class LogActivity extends Activity {
         delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 int i = mTypeSpinner.getSelectedItemPosition();
-                LogCatManager.deleteLog(mCallbacks.get(i).getFileName());
+                LogCatManager.deleteLog(Constants.RUNNING_CALLBACKS.get(i).getFileName());
             }
         });
     }
@@ -94,13 +94,11 @@ public class LogActivity extends Activity {
     }
 
     private void initSpinner() {
-        mCallbacks.add(new ErrorLogCallback());
-        mCallbacks.add(new DebugLogCallback());
         List<Map<String, ?>> list = new ArrayList<Map<String, ?>>();
-        final int end = mCallbacks.size();
+        final int end = Constants.RUNNING_CALLBACKS.size();
         for (int i = 0; i < end; i++) {
             Map<String, String> keyValuePair = new ArrayMap<String, String>();
-            keyValuePair.put("name", mCallbacks.get(i).getName());
+            keyValuePair.put("name", Constants.RUNNING_CALLBACKS.get(i).getName());
             list.add(keyValuePair);
         }
         mTypeSpinner = (Spinner) findViewById(R.id.log_type_spinner);
@@ -108,7 +106,7 @@ public class LogActivity extends Activity {
                 new int[]{android.R.id.text1}));
         mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mAdapter = new BaseLogAdapter(LogActivity.this, mCallbacks.get(i).getFullData());
+                mAdapter = new BaseLogAdapter(LogActivity.this, Constants.RUNNING_CALLBACKS.get(i).getFullData());
                 mLogList.setAdapter(mAdapter);
             }
 

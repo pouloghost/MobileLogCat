@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 
-import gt.utils.log.mobilelogcat.callback.DebugLogCallback;
-import gt.utils.log.mobilelogcat.callback.ErrorLogCallback;
+import gt.utils.log.mobilelogcat.callback.AbsLogCallback;
+import gt.utils.log.mobilelogcat.common.Constants;
 import gt.utils.log.mobilelogcat.common.LogCatManager;
 
 /**
@@ -31,8 +31,9 @@ public class LogService extends Service {
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler(getMainLooper());
-        LogCatManager.getInstance().registerCallback(new DebugLogCallback());
-        LogCatManager.getInstance().registerCallback(new ErrorLogCallback());
+        for (AbsLogCallback callback : Constants.RUNNING_CALLBACKS) {
+            LogCatManager.getInstance().registerCallback(callback);
+        }
     }
 
     @Override

@@ -26,9 +26,6 @@ public class Constants {
         LEVEL_COLORS.put(LogLevel.I.toString(), Color.parseColor("#B452CD"));
         LEVEL_COLORS.put(LogLevel.D.toString(), Color.parseColor("#6495ED"));
         LEVEL_COLORS.put(LogLevel.V.toString(), Color.parseColor("#000000"));
-
-        RUNNING_CALLBACKS.add(new DebugLogCallback());
-        RUNNING_CALLBACKS.add(new ErrorLogCallback());
     }
 
     public enum LogLevel {
