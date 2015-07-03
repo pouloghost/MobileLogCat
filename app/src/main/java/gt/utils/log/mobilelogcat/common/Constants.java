@@ -6,8 +6,7 @@ import android.support.v4.util.ArrayMap;
 import java.util.ArrayList;
 
 import gt.utils.log.mobilelogcat.callback.AbsLogCallback;
-import gt.utils.log.mobilelogcat.callback.DebugLogCallback;
-import gt.utils.log.mobilelogcat.callback.ErrorLogCallback;
+import gt.utils.log.mobilelogcat.callback.AllLogCallback;
 
 /**
  * Created by ghost on 2015/7/2.
@@ -26,6 +25,8 @@ public class Constants {
         LEVEL_COLORS.put(LogLevel.I.toString(), Color.parseColor("#B452CD"));
         LEVEL_COLORS.put(LogLevel.D.toString(), Color.parseColor("#6495ED"));
         LEVEL_COLORS.put(LogLevel.V.toString(), Color.parseColor("#000000"));
+
+        RUNNING_CALLBACKS.add(new AllLogCallback());
     }
 
     public enum LogLevel {
