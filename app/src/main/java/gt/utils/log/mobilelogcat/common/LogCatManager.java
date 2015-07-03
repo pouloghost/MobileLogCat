@@ -114,21 +114,26 @@ public class LogCatManager {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            File file = new File(dir, path);
-            if (!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    Log.w("LogCatManager", e);
-                }
-            }
             try {
-                writer = new OutputStreamWriter(new FileOutputStream(file, true));
+                writer = new OutputStreamWriter(new FileOutputStream(LogFileUtils.getLogFile(dir, path), true));
             } catch (FileNotFoundException e) {
                 Log.w("LogCatManager", e);
             }
             mLogWriters.put(path, writer);
         }
         return writer;
+    }
+
+    private void deleteExpiredFiles() {
+        if (Constants.CHECK_EXPIRE_ON_WRITE) {
+            File dir = new File(Constants.PATH);
+            if (dir.exists()) {
+                for (AbsLogCallback callback : Constants.RUNNING_CALLBACKS) {
+                    if (LogFileUtils.checkAndDeleteExpireFile(dir, callback.getFileName())) {
+                        mLogWriters.remove(callback.getFileName());
+                    }
+                }
+            }
+        }
     }
 }

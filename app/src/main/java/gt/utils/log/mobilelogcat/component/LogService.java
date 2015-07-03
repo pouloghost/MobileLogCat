@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 
+import java.io.File;
+
 import gt.utils.log.mobilelogcat.callback.AbsLogCallback;
 import gt.utils.log.mobilelogcat.common.Constants;
 import gt.utils.log.mobilelogcat.common.LogCatManager;
+import gt.utils.log.mobilelogcat.common.LogFileUtils;
 
 /**
  * Created by ghost on 2015/7/1.
@@ -38,7 +41,19 @@ public class LogService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mHandler.post(mRunnable);
+        deleteExpiredFiles();
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void deleteExpiredFiles() {
+        if (Constants.CHECK_EXPIRE_ON_START) {
+            File dir = new File(Constants.PATH);
+            if (dir.exists()) {
+                for (AbsLogCallback callback : Constants.RUNNING_CALLBACKS) {
+                    LogFileUtils.checkAndDeleteExpireFile(dir, callback.getFileName());
+                }
+            }
+        }
     }
 
     @Override

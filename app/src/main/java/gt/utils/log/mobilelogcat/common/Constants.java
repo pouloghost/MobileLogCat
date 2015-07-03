@@ -12,10 +12,14 @@ import gt.utils.log.mobilelogcat.callback.AllLogCallback;
  * Created by ghost on 2015/7/2.
  */
 public class Constants {
-    public static final String PATH = "/sdcard/afwealth/logs";
+    public static final String PATH = "/sdcard/logs";
     public static final ArrayMap<String, Integer> LEVEL_COLORS = new ArrayMap<String, Integer>();
     public static final ArrayList<AbsLogCallback> RUNNING_CALLBACKS = new ArrayList<AbsLogCallback>();
     public static final long LOOP_TIME = 1000 * 6;
+    public static final String SEPARATOR = "-";
+    public static final long EXPIRE_TIME = 1000 * 60 * 60 * 24;
+    public static boolean CHECK_EXPIRE_ON_WRITE = false;
+    public static boolean CHECK_EXPIRE_ON_START = true;
 
     static {
         LEVEL_COLORS.put(LogLevel.S.toString(), Color.parseColor("#303030"));
