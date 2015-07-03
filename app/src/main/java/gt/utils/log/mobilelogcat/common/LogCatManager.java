@@ -58,11 +58,13 @@ public class LogCatManager {
             BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
             String line;
+            LogModel model = null;
             while ((line = bufferedReader.readLine()) != null) {
-                LogModel model = new LogModel(line);
-                if (model.isLegal() && model.timestamp > mLastLogTime) {
+                model = LogFactory.onNewLine(line);
+                if (null != model && model.timestamp > mLastLogTime) {
                     onNewLog(model);
                     mLastLogTime = model.timestamp;
+                    model = null;
                 }
             }
         } catch (IOException e) {
