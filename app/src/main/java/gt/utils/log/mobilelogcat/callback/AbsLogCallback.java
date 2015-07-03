@@ -14,6 +14,7 @@ import java.util.List;
 
 import gt.utils.log.mobilelogcat.common.Constants;
 import gt.utils.log.mobilelogcat.common.LogCatManager;
+import gt.utils.log.mobilelogcat.common.LogFileUtils;
 import gt.utils.log.mobilelogcat.common.LogModel;
 
 /**
@@ -39,7 +40,8 @@ public abstract class AbsLogCallback {
         List<LogModel> data = null;
         BufferedReader reader = null;
         try {
-            File file = new File(Constants.PATH + "/" + getFileName());
+            File dir = new File(Constants.PATH);
+            File file = LogFileUtils.getLogFile(dir, getFileName());
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             data = new ArrayList<LogModel>();
             String line;
