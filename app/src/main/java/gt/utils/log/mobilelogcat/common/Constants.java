@@ -15,7 +15,7 @@ public class Constants {
     public static final String PATH = "/sdcard/afwealth/logs";
     public static final ArrayMap<String, Integer> LEVEL_COLORS = new ArrayMap<String, Integer>();
     public static final ArrayList<AbsLogCallback> RUNNING_CALLBACKS = new ArrayList<AbsLogCallback>();
-
+    public static final long LOOP_TIME = 1000 * 6;
 
     static {
         LEVEL_COLORS.put(LogLevel.S.toString(), Color.parseColor("#303030"));
