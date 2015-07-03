@@ -11,14 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gt.utils.log.mobilelogcat.R;
+import gt.utils.log.mobilelogcat.common.LogUtils;
 import gt.utils.log.mobilelogcat.filter.AbsLogFilter;
 import gt.utils.log.mobilelogcat.filter.ContainsFilter;
 import gt.utils.log.mobilelogcat.filter.LevelFilter;
+import gt.utils.log.mobilelogcat.filter.TimeRangeFilter;
 
 
 /**
@@ -28,9 +31,12 @@ public class FilterView extends FrameLayout {
     private Spinner mLevelSpinner;
     private EditText mTagEditText;
     private EditText mContentEditText;
+    private TextView mRangeHint;
+    private RangeSeekBarView mRangeBar;
     private Button mOkButton;
 
     private LevelFilter mLevelFilter;
+    private TimeRangeFilter mRangeFilter;
 
     private OnNewFiltersListener mListener;
 
@@ -54,7 +60,27 @@ public class FilterView extends FrameLayout {
         initLevelFilter();
         mTagEditText = (EditText) findViewById(R.id.log_filter_tag);
         mContentEditText = (EditText) findViewById(R.id.log_filter_content);
+        initRange();
         initOk();
+    }
+
+    private void initRange() {
+        mRangeHint = (TextView) findViewById(R.id.log_filter_range_hint);
+        mRangeBar = (RangeSeekBarView) findViewById(R.id.log_filter_range);
+    }
+
+    public void setRange(final int low, final int high) {
+        mRangeBar.setRange(low, high);
+        mRangeBar.setListener(new RangeSeekBarView.OnRangeChangedListener() {
+            public void onRangeChanged(int l, int h) {
+                if (l == low && h == high) {
+                    mRangeFilter = null;
+                } else {
+                    mRangeFilter = new TimeRangeFilter(l, h);
+                }
+                mRangeHint.setText("From " + LogUtils.getTimeString(l) + " To " + LogUtils.getTimeString(h));
+            }
+        });
     }
 
     private void initOk() {
@@ -77,6 +103,10 @@ public class FilterView extends FrameLayout {
 
                 if (null != mLevelFilter) {
                     filters.add(mLevelFilter);
+                }
+
+                if (null != mRangeFilter) {
+                    filters.add(mRangeFilter);
                 }
 
                 mListener.onNewFilters(filters);

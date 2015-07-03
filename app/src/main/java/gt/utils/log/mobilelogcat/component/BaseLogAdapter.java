@@ -2,22 +2,19 @@ package gt.utils.log.mobilelogcat.component;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import gt.utils.log.mobilelogcat.R;
 import gt.utils.log.mobilelogcat.common.Constants;
 import gt.utils.log.mobilelogcat.common.LogModel;
-import gt.utils.log.mobilelogcat.component.FilterView;
+import gt.utils.log.mobilelogcat.common.LogUtils;
 import gt.utils.log.mobilelogcat.filter.AbsLogFilter;
 
 /**
@@ -76,7 +73,6 @@ public class BaseLogAdapter extends BaseAdapter implements FilterView.OnNewFilte
     }
 
     private static class Holder {
-        private static SimpleDateFormat sFORMAT = new SimpleDateFormat("hh:mm:ss:SSS");
         public TextView tag;
         public TextView time;
         public TextView abstraction;
@@ -89,7 +85,7 @@ public class BaseLogAdapter extends BaseAdapter implements FilterView.OnNewFilte
 
         public void onBind(LogModel model) {
             tag.setText(model.tag);
-            time.setText(sFORMAT.format(new Date(model.timestamp)));
+            time.setText(LogUtils.getTimeString(model.timestamp));
             abstraction.setText(model.content);
             Integer color;
             if (null != (color = Constants.LEVEL_COLORS.get(model.logLevel))) {

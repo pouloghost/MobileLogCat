@@ -106,7 +106,11 @@ public class LogActivity extends Activity {
                 new int[]{android.R.id.text1}));
         mTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mAdapter = new BaseLogAdapter(LogActivity.this, Constants.RUNNING_CALLBACKS.get(i).getFullData());
+                List<LogModel> data = Constants.RUNNING_CALLBACKS.get(i).getFullData();
+                if (data.size() > 0) {
+                    mFilterView.setRange((int) data.get(0).timestamp, (int) data.get(data.size() - 1).timestamp);
+                }
+                mAdapter = new BaseLogAdapter(LogActivity.this, data);
                 mLogList.setAdapter(mAdapter);
             }
 
