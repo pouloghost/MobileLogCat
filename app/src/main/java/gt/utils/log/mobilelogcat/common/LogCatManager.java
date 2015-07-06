@@ -64,7 +64,6 @@ public class LogCatManager {
                 if (null != model && model.timestamp > mLastLogTime) {
                     onNewLog(model);
                     mLastLogTime = model.timestamp;
-                    model = null;
                 }
             }
         } catch (IOException e) {

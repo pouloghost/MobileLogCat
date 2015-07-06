@@ -16,9 +16,7 @@
             android:label="Log" />
 
         <service
-            android:name=".component.LogService"
-            android:exported="false"
-            android:process=":log" />
+            android:name=".component.LogService" />
 
         <activity
             android:name=".demo.MainActivity"

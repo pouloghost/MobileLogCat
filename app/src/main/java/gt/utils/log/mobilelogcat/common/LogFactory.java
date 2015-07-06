@@ -1,5 +1,7 @@
 package gt.utils.log.mobilelogcat.common;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,29 +14,39 @@ public class LogFactory {
     private static final SimpleDateFormat sFORMAT = new SimpleDateFormat("MM-dd hh:mm:ss.SSS");
     private static final int sPARTS = 5;
 
-    private static LogModel mCurrentLog;
+    private static LogModel sLastLog;
 
     public static LogModel onNewLine(String log) {
         Matcher matcher = sPATTERN.matcher(log);
         LogModel model = null;
+        boolean shouldReturn = true;
         if (matcher.find()) {
             if (sPARTS == matcher.groupCount()) {
-                model = mCurrentLog;
-                mCurrentLog = new LogModel();
+                model = new LogModel();
                 try {
-                    mCurrentLog.timestamp = sFORMAT.parse(matcher.group(1)).getTime();
-                    mCurrentLog.logLevel = matcher.group(2);
-                    mCurrentLog.tag = matcher.group(3);
-                    mCurrentLog.process = Integer.parseInt(matcher.group(4));
-                    mCurrentLog.content = matcher.group(5);
+                    model.timestamp = sFORMAT.parse(matcher.group(1)).getTime();
+                    model.logLevel = matcher.group(2);
+                    model.tag = matcher.group(3);
+                    model.process = Integer.parseInt(matcher.group(4));
+                    model.content = matcher.group(5);
+                    if (null != sLastLog && model.timestamp == sLastLog.timestamp && !sLastLog.content.equals(matcher.groupCount())) {
+                        sLastLog.content = sLastLog.content + "\n" + model.content;
+                        model = null;
+                    }
                 } catch (Exception e) {
+                    Log.e("LogCatManager", e.getMessage());
                 }
             }
         } else {
-            if (null != mCurrentLog) {
-                mCurrentLog.content += log;
+            if (!log.startsWith("----") && null != sLastLog) {
+                sLastLog.content += log;
             }
         }
-        return model;
+        if (null != model) {
+            LogModel tmp = sLastLog;
+            sLastLog = model;
+            return tmp;
+        }
+        return null;
     }
 }
