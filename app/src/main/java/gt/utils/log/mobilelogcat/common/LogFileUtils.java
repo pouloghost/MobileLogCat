@@ -10,9 +10,12 @@ import java.io.IOException;
  */
 public class LogFileUtils {
     public static void deleteLog(String path) {
-        File file = new File(Constants.PATH, path);
-        if (file.exists()) {
-            file.delete();
+        File dir = new File(Constants.PATH);
+        if (dir.exists()) {
+            File file = getLogFile(dir, path);
+            if (file.exists()) {
+                file.delete();
+            }
         }
     }
 

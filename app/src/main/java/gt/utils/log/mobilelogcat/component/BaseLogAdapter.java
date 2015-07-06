@@ -101,4 +101,10 @@ public class BaseLogAdapter extends BaseAdapter implements FilterView.OnNewFilte
             abstraction.setSingleLine(true);
         }
     }
+
+    public void clear() {
+        mFullData.clear();
+        mData.clear();
+        notifyDataSetChanged();
+    }
 }

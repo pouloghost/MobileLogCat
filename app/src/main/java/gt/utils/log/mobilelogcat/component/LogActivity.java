@@ -51,6 +51,7 @@ public class LogActivity extends Activity {
             public void onClick(View view) {
                 int i = mTypeSpinner.getSelectedItemPosition();
                 LogFileUtils.deleteLog(Constants.RUNNING_CALLBACKS.get(i).getFileName());
+                mAdapter.clear();
             }
         });
     }
