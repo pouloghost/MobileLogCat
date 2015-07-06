@@ -17,11 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import gt.utils.log.mobilelogcat.R;
-import gt.utils.log.mobilelogcat.callback.AbsLogCallback;
-import gt.utils.log.mobilelogcat.callback.DebugLogCallback;
-import gt.utils.log.mobilelogcat.callback.ErrorLogCallback;
 import gt.utils.log.mobilelogcat.common.Constants;
-import gt.utils.log.mobilelogcat.common.LogCatManager;
+import gt.utils.log.mobilelogcat.common.LogFileUtils;
 import gt.utils.log.mobilelogcat.common.LogModel;
 import gt.utils.log.mobilelogcat.filter.AbsLogFilter;
 
@@ -53,7 +50,7 @@ public class LogActivity extends Activity {
         delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 int i = mTypeSpinner.getSelectedItemPosition();
-                LogCatManager.deleteLog(Constants.RUNNING_CALLBACKS.get(i).getFileName());
+                LogFileUtils.deleteLog(Constants.RUNNING_CALLBACKS.get(i).getFileName());
             }
         });
     }
@@ -62,6 +59,7 @@ public class LogActivity extends Activity {
         mFilterView = (FilterView) findViewById(R.id.log_filter_wrapper);
         mFilterView.setListener(new FilterView.OnNewFiltersListener() {
             public void onNewFilters(List<AbsLogFilter> filters) {
+                mFilterView.setVisibility(View.GONE);
                 if (null != mAdapter) {
                     mAdapter.onNewFilters(filters);
                 }
@@ -87,7 +85,7 @@ public class LogActivity extends Activity {
                 PopupWindow popupWindow = new PopupWindow(getDetailView((LogModel) adapterView.getAdapter().getItem(i)), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
                 popupWindow.setTouchable(true);
                 popupWindow.setFocusable(true);
-                popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.abc_btn_borderless_material));
+                popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.abc_item_background_holo_dark));
                 popupWindow.showAsDropDown(mAnchor);
             }
         });
@@ -108,7 +106,7 @@ public class LogActivity extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 List<LogModel> data = Constants.RUNNING_CALLBACKS.get(i).getFullData();
                 if (data.size() > 0) {
-                    mFilterView.setRange((int) data.get(0).timestamp, (int) data.get(data.size() - 1).timestamp);
+                    mFilterView.setTimeRange(data.get(0).timestamp, data.get(data.size() - 1).timestamp);
                 }
                 mAdapter = new BaseLogAdapter(LogActivity.this, data);
                 mLogList.setAdapter(mAdapter);

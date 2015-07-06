@@ -90,6 +90,11 @@ public class RangeSeekBarView extends FrameLayout {
         });
     }
 
+    public void reset() {
+        mLowView.setProgress(0);
+        mHighView.setProgress(mHighView.getMax());
+    }
+
     private void onRangeChanged() {
         if (null != mListener) {
             mListener.onRangeChanged(mLowValue + mLowView.getProgress(), mLowValue + mHighView.getProgress());

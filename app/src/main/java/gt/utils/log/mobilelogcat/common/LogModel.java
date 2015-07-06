@@ -29,6 +29,9 @@ public class LogModel implements Serializable {
     }
 
     public boolean isFiltered(List<AbsLogFilter> filters) {
+        if (null == filters) {
+            return true;
+        }
         boolean result = true;
         for (AbsLogFilter filter : filters) {
             result &= filter.shouldShow(this);

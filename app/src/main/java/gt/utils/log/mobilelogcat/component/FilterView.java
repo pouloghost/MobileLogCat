@@ -28,15 +28,19 @@ import gt.utils.log.mobilelogcat.filter.TimeRangeFilter;
  * Created by ghost on 2015/7/2.
  */
 public class FilterView extends FrameLayout {
+    private static final int MAX = 1000;
     private Spinner mLevelSpinner;
     private EditText mTagEditText;
     private EditText mContentEditText;
     private TextView mRangeHint;
     private RangeSeekBarView mRangeBar;
+    private Button mResetButton;
     private Button mOkButton;
 
     private LevelFilter mLevelFilter;
     private TimeRangeFilter mRangeFilter;
+    private long mLow;
+    private long mHigh;
 
     private OnNewFiltersListener mListener;
 
@@ -61,7 +65,7 @@ public class FilterView extends FrameLayout {
         mTagEditText = (EditText) findViewById(R.id.log_filter_tag);
         mContentEditText = (EditText) findViewById(R.id.log_filter_content);
         initRange();
-        initOk();
+        initButtons();
     }
 
     private void initRange() {
@@ -69,21 +73,36 @@ public class FilterView extends FrameLayout {
         mRangeBar = (RangeSeekBarView) findViewById(R.id.log_filter_range);
     }
 
-    public void setRange(final int low, final int high) {
-        mRangeBar.setRange(low, high);
+    public void setTimeRange(long low, long high) {
+        mLow = low;
+        mHigh = high;
+        mRangeBar.setRange(0, MAX);
         mRangeBar.setListener(new RangeSeekBarView.OnRangeChangedListener() {
             public void onRangeChanged(int l, int h) {
-                if (l == low && h == high) {
+                if (l == 0 && h == MAX) {
                     mRangeFilter = null;
                 } else {
-                    mRangeFilter = new TimeRangeFilter(l, h);
+                    mRangeFilter = new TimeRangeFilter(getTime(l), getTime(h));
                 }
-                mRangeHint.setText("From " + LogUtils.getTimeString(l) + " To " + LogUtils.getTimeString(h));
+                mRangeHint.setText("From " + LogUtils.getTimeString(getTime(l)) + " To " + LogUtils.getTimeString(getTime(h)));
             }
         });
     }
 
-    private void initOk() {
+    private long getTime(int range) {
+        return (long) (mLow + (mHigh - mLow) * ((float) range / MAX));
+    }
+
+    private void initButtons() {
+        mResetButton = (Button) findViewById(R.id.log_filter_reset);
+        mResetButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                reset();
+                if (null != mListener) {
+                    mListener.onNewFilters(null);
+                }
+            }
+        });
         mOkButton = (Button) findViewById(R.id.log_filter_ok);
         mOkButton.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
@@ -108,8 +127,9 @@ public class FilterView extends FrameLayout {
                 if (null != mRangeFilter) {
                     filters.add(mRangeFilter);
                 }
-
-                mListener.onNewFilters(filters);
+                if (null != mListener) {
+                    mListener.onNewFilters(filters);
+                }
             }
         });
     }
@@ -120,13 +140,25 @@ public class FilterView extends FrameLayout {
         mLevelSpinner.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, android.R.id.text1, levels));
         mLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mLevelFilter = new LevelFilter(levels[i]);
+                if (i > 0) {
+                    mLevelFilter = new LevelFilter(levels[i]);
+                }
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
                 mLevelFilter = null;
             }
         });
+    }
+
+    public void reset() {
+        mLevelFilter = null;
+        mRangeFilter = null;
+        mRangeHint.setText("");
+        mLevelSpinner.setSelection(0);
+        mTagEditText.setText("");
+        mContentEditText.setText("");
+        mRangeBar.reset();
     }
 
     public void setListener(OnNewFiltersListener listener) {
@@ -137,3 +169,4 @@ public class FilterView extends FrameLayout {
         void onNewFilters(List<AbsLogFilter> filters);
     }
 }
+

@@ -55,8 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/log_filter_content"
-        android:textSize="20sp"
-        android:text="From To " />
+        android:text="From To "
+        android:textSize="20sp" />
 
     <gt.utils.log.mobilelogcat.component.RangeSeekBarView
         android:id="@+id/log_filter_range"
@@ -65,9 +65,16 @@
         android:layout_below="@+id/log_filter_range_hint" />
 
     <Button
-        android:id="@+id/log_filter_ok"
+        android:id="@+id/log_filter_reset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/log_filter_range"
+        android:text="Reset" />
+
+    <Button
+        android:id="@+id/log_filter_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/log_filter_reset"
         android:text="Filter" />
 </RelativeLayout>
