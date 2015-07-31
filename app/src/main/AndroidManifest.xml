@@ -15,8 +15,7 @@
             android:name=".component.LogActivity"
             android:label="Log" />
 
-        <service
-            android:name=".component.LogService" />
+        <service android:name=".component.LogService" />
 
         <activity
             android:name=".demo.MainActivity"
@@ -27,6 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".component.RecordService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
